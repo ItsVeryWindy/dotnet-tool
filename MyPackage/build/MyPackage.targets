@@ -1,0 +1,6 @@
+<Project>
+  <Target Name="Demo" AfterTargets="Build">
+    <Message Importance="High" Text="Package targets importeds" />
+	  <Exec Command="dotnet $(MSBuildThisFileDirectory)/../tools/$(TargetFramework)/Tool.dll $(TargetPath) &quot;$(NuGetPackageRoot)&quot;" />
+  </Target>
+</Project>

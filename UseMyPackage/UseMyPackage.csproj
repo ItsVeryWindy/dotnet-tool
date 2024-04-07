@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <InvariantGlobalization>true</InvariantGlobalization>
+    </PropertyGroup>
+
+	<ItemGroup>
+		<UpToDateCheckInput Include="packages/MyPackage.1.0.0-local.nupkg" />
+	</ItemGroup>
+	
+	<ItemGroup>
+		<ProjectReference Include="..\MyPackage\MyPackage.csproj" Properties="RuntimeIdentifier=;SelfContained=false" Condition="$(ExcludeMyPackageProject) != 'true'">
+			<ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+			<Private>false</Private>
+			<ExcludeAssets>all</ExcludeAssets>
+			<DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
+			<SkipGetTargetFrameworkProperties>true</SkipGetTargetFrameworkProperties>
+		</ProjectReference>
+	</ItemGroup>
+	
+    <ItemGroup>
+	    <PackageReference Include="MyPackage" Version="1.0.0-local" />
+	    <PackageReference Include="YamlDotNet" Version="15.1.0" />
+    </ItemGroup>
+</Project>

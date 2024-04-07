@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+	<PropertyGroup>
+		<TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<PackAsTool>true</PackAsTool>
+		<ToolCommandName>tool</ToolCommandName>
+		<IsPublishable>true</IsPublishable>
+		<PublishDir>../MyPackage/tools/$(TargetFramework)</PublishDir>
+		<UseAppHost>false</UseAppHost>
+		<DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
+	</PropertyGroup>
+
+	<Target Name="PublishAfterBuild" AfterTargets="Build" Condition="$(TargetFramework) != ''">
+		<RemoveDir Directories="$(PublishDir)/$(TargetFramework)" />
+		<MSBuild Projects="$(MSBuildProjectFile)" Targets="Publish" Properties="TargetFramework=$(TargetFramework);NoBuild=true" />
+	</Target>
+
+	<ItemGroup>
+	  <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="8.0.0" />
+	  <PackageReference Include="YamlDotNet" Version="15.1.2" />
+	</ItemGroup>
+
+	<!--<Target Name="ChangeAliasesOfYamlDotNetNameAssemblies" BeforeTargets="FindReferenceAssembliesForReferences;ResolveReferences">
+		<ItemGroup>
+			<ReferencePath Condition="'%(FileName)' == 'YamlDotNet'">
+				<Aliases>nonmerged</Aliases>
+			</ReferencePath>
+		</ItemGroup>
+	</Target>-->
+</Project>

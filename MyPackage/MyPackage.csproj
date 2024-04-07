@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.Build.NoTargets/3.7.56">
+	<PropertyGroup>
+		<TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
+		<NoWarn>NU5128</NoWarn>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<PackageUserPath>../UseMyPackage</PackageUserPath>
+		<PackageOutputPath>$(PackageUserPath)/packages</PackageOutputPath>
+		<VersionSuffix>local</VersionSuffix>
+		<DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Tool\Tool.csproj">
+			<ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+			<Private>false</Private>
+			<ExcludeAssets>all</ExcludeAssets>
+			<DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
+			<SkipGetTargetFrameworkProperties>true</SkipGetTargetFrameworkProperties>
+		</ProjectReference>
+	</ItemGroup>
+	
+	<ItemGroup>
+		<Content Include="build/**" target="build" Pack="true" PackagePath="%(Identity)" />
+		<Content Include="tools/**" target="tools" Pack="true" PackagePath="%(Identity)" />
+		<UpToDateCheckInput Include="build/**" />
+		<UpToDateCheckInput Include="tools/**" />
+		<UpToDateCheckOutput Include="$(PackageOutputPath)/$(PackageId).nupkg" />
+	</ItemGroup>
+
+	<Target Name="AfterPack" AfterTargets="Pack">
+		<RemoveDir Directories="$(PackageOutputPath)/$(PackageId.ToLower())" />
+		<MSBuild Projects="../UseMyPackage/UseMyPackage.csproj" Targets="Restore" Properties="TargetFramework=net8.0;ExcludeMyPackageProject=true;RestoreConfigFile=UseMyPackage/NuGet.config" />
+	</Target>
+</Project>
