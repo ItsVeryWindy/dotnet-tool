@@ -1,9 +1,12 @@
+using TestLibrary;
 using YamlDotNet.Core;
 using YamlDotNet.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+Class1.AAA(new HostBuilder());
 
 builder.Services.AddSingleton<IDeserializer>(sp => new DeserializerBuilder().Build());
 

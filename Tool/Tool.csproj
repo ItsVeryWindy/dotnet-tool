@@ -2,7 +2,6 @@
 	<PropertyGroup>
 		<TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
 		<OutputType>Exe</OutputType>
-		<TargetFramework>net8.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<PackAsTool>true</PackAsTool>
@@ -11,6 +10,7 @@
 		<PublishDir>../MyPackage/tools/$(TargetFramework)</PublishDir>
 		<UseAppHost>false</UseAppHost>
 		<DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
+		<LangVersion>12.0</LangVersion>
 	</PropertyGroup>
 
 	<Target Name="PublishAfterBuild" AfterTargets="Build" Condition="$(TargetFramework) != ''">
@@ -21,6 +21,11 @@
 	<ItemGroup>
 	  <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="8.0.0" />
 	  <PackageReference Include="YamlDotNet" Version="15.1.2" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\ToolLibrary.Abstractions\ToolLibrary.Abstractions.csproj" />
+	  <ProjectReference Include="..\ToolLibrary\ToolLibrary.csproj" />
 	</ItemGroup>
 
 	<!--<Target Name="ChangeAliasesOfYamlDotNetNameAssemblies" BeforeTargets="FindReferenceAssembliesForReferences;ResolveReferences">

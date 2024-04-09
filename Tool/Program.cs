@@ -1,8 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
-using Microsoft.Extensions.Diagnostics.HealthChecks;
-using Microsoft.Extensions.Options;
-using YamlDotNet.Serialization;
-using System.Diagnostics;
+using ToolLibrary;
+using ToolLibrary.Abstractions;
 
 var assemblyPath = args[0];
 var nugetPath = args[1];
@@ -13,14 +11,18 @@ var context = new CustomAssemblyLoadContext(assemblyPath, nugetPath);
 
 //Debugger.Launch();
 
-var resolver = HostFactoryResolver.ResolveServiceProviderFactory(context.Assembly)(Array.Empty<string>());
+using var scope = context.EnterContextualReflection();
 
-var options = resolver.GetService<IOptions<HealthCheckServiceOptions>>();
+var toolLibraryAssembly = context.LoadFromAssemblyPath(typeof(Class1).Assembly.Location);
 
-if (options is null)
+var class1 = (IClass1)toolLibraryAssembly.CreateInstance(typeof(Class1).FullName!)!;
+
+var names = class1.Do(context.Assembly);
+
+if (names is null)
     return;
 
-foreach (var reg in options.Value.Registrations)
+foreach (var name in names)
 {
-    Console.WriteLine($"Health Check Name: {reg.Name}");
+    Console.WriteLine($"Health Check Name: {name}");
 }

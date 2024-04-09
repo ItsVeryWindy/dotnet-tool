@@ -18,6 +18,7 @@
 			<DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
 			<SkipGetTargetFrameworkProperties>true</SkipGetTargetFrameworkProperties>
 		</ProjectReference>
+		<ProjectReference Include="..\TestLibrary\TestLibrary.csproj" />
 	</ItemGroup>
 	
     <ItemGroup>
